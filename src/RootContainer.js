@@ -24,25 +24,45 @@ const RootContainer = ({ serviceUrl, entity }) => {
 
 	useEffect(() => {
 		const heatmapData = [];
+		const heatmapObj = {};
 		data.forEach(d => {
-			const heatmapObj = {};
 			d.proteinAtlasExpression.forEach(p => {
 				heatmapObj[p.cellType] = {
 					data:
 						heatmapObj[p.cellType] && heatmapObj[p.cellType].data
 							? {
-									[p.tissue.name]: getScore(p.level),
-									...heatmapObj[p.cellType].data
+								...heatmapObj[p.cellType].data,
+								[d.symbol]: heatmapObj[p.cellType].data[d.symbol]
+									? {
+										[p.tissue.name]: getScore(p.level),
+										...heatmapObj[p.cellType].data[d.symbol]
+									}
+									: {
+										Gene: d.symbol,
+										[p.tissue.name]: getScore(p.level)
+									}
 							  }
-							: { Gene: d.symbol, [p.tissue.name]: getScore(p.level) },
+							: {
+								[d.symbol]: {
+									Gene: d.symbol,
+									[p.tissue.name]: getScore(p.level)
+								}
+							  },
 					tissue:
 						heatmapObj[p.cellType] && heatmapObj[p.cellType].tissue
-							? [p.tissue.name, ...heatmapObj[p.cellType].tissue]
-							: [p.tissue.name]
+							? heatmapObj[p.cellType].tissue.filter(
+								t => t.value == p.tissue.name
+							  ).length == 0
+								? [
+									{ value: p.tissue.name, label: p.tissue.name },
+									...heatmapObj[p.cellType].tissue
+								  ]
+								: heatmapObj[p.cellType].tissue
+							: [{ value: p.tissue.name, label: p.tissue.name }]
 				};
 			});
-			heatmapData.push(heatmapObj);
 		});
+		heatmapData.push(heatmapObj);
 		setHeatmapData(heatmapData);
 	}, [data]);
 
