@@ -14,10 +14,14 @@ const Heatmap = ({ graphData, graphHeight }) => {
 			}}
 		>
 			{graphData.map(g =>
-				Object.keys(g).map(d => (
+				Object.keys(g).map((d, index) => (
 					<div
+						key={index}
 						style={{
-							width: Object.values(g[d].tissue).length * 50,
+							width:
+								index != 0
+									? Object.values(g[d].tissue).length * 50
+									: Object.values(g[d].tissue).length * 50 + 60,
 							height: graphHeight
 						}}
 					>
@@ -26,7 +30,7 @@ const Heatmap = ({ graphData, graphHeight }) => {
 							keys={Object.values(g[d].tissue).map(t => t.value)}
 							colors={heatmap_colors}
 							indexBy={'Gene'}
-							margin={{ top: 200, right: 0, bottom: 0, left: 0 }}
+							margin={{ top: 200, right: 0, bottom: 0, left: !index ? 60 : 0 }}
 							forceSquare={true}
 							axisTop={{
 								orient: 'top',
@@ -35,15 +39,23 @@ const Heatmap = ({ graphData, graphHeight }) => {
 								tickRotation: -90
 							}}
 							height={graphHeight}
-							width={Object.values(g[d].tissue).length * 50}
+							width={
+								index != 0
+									? Object.values(g[d].tissue).length * 50
+									: Object.values(g[d].tissue).length * 50 + 60
+							}
 							axisRight={null}
 							axisBottom={null}
-							axisLeft={{
-								orient: 'left',
-								tickSize: 5,
-								tickPadding: 5,
-								tickRotation: 0
-							}}
+							axisLeft={
+								!index
+									? {
+										orient: 'left',
+										tickSize: 5,
+										tickPadding: 5,
+										tickRotation: 0
+									  }
+									: null
+							}
 							cellBorderWidth={2}
 						/>
 					</div>
