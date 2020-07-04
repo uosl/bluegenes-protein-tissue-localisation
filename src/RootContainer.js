@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { queryData } from './query';
+import Heatmap from './Heatmap';
 
 const RootContainer = ({ serviceUrl, entity }) => {
 	const [data, setData] = useState([]);
@@ -41,13 +42,13 @@ const RootContainer = ({ serviceUrl, entity }) => {
 										Gene: d.symbol,
 										[p.tissue.name]: getScore(p.level)
 									}
-							  }
+							}
 							: {
 								[d.symbol]: {
 									Gene: d.symbol,
 									[p.tissue.name]: getScore(p.level)
 								}
-							  },
+							},
 					tissue:
 						heatmapObj[p.cellType] && heatmapObj[p.cellType].tissue
 							? heatmapObj[p.cellType].tissue.filter(
@@ -78,7 +79,16 @@ const RootContainer = ({ serviceUrl, entity }) => {
 			<div className="innerContainer">
 				<div className="graph">
 					<span className="chart-title">Gene Tissue Localisation Network</span>
-					{!data.length && loading ? <h1>Loading...</h1> : <></>}
+					{!data.length && loading ? (
+						<h1>Loading...</h1>
+					) : (
+						<>
+							<Heatmap
+								graphData={heatmapData}
+								graphHeight={data.length * 100 + 50}
+							/>
+						</>
+					)}
 				</div>
 			</div>
 		</div>
