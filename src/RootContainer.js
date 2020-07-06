@@ -24,8 +24,8 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	}, []);
 
 	useEffect(() => {
-		const heatmapData = [];
 		const heatmapObj = {};
+		const genes = data.map(d => d.symbol);
 		data.forEach(d => {
 			d.proteinAtlasExpression.forEach(p => {
 				heatmapObj[p.cellType] = {
@@ -61,10 +61,21 @@ const RootContainer = ({ serviceUrl, entity }) => {
 								: heatmapObj[p.cellType].tissue
 							: [{ value: p.tissue.name, label: p.tissue.name }]
 				};
+				if(
+					heatmapObj[p.cellType] &&
+					heatmapObj[p.cellType].data &&
+					Object.keys(heatmapObj[p.cellType].data).length < genes.length
+				) {
+					genes.forEach(g => {
+						heatmapObj[p.cellType].data = {
+							[g]: {Gene: g},
+							...heatmapObj[p.cellType].data
+						};
+					});
+				}
 			});
 		});
-		heatmapData.push(heatmapObj);
-		setHeatmapData(heatmapData);
+		setHeatmapData([heatmapObj]);
 	}, [data]);
 
 	const getScore = level => {
