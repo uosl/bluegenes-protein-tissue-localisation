@@ -31,6 +31,117 @@
           white-space: nowrap;
           text-align: center;
         }
+
+        .filter-panel-root {
+          width: 90%;
+          margin: auto;
+          text-align: center;
+          border: solid 1px black;
+          border-radius: 4px;
+
+          .filter-panel-title {
+            margin-top: 20px;
+            font-size: 20px;
+            font-family: sans-serif;
+            text-align: center;
+          }
+
+          .filter-panel {
+            padding: 30px;
+
+            .filter-container {
+              display: flex;
+              text-align: left;
+              font-size: 16px;
+              font-weight: 300;
+              font-family: sans-serif;
+              .tissue-filter {
+                width: 30rem;
+                margin-right: 50px;
+                .dropdown {
+                  margin: 10px 0 0 0;
+                }
+              }
+              .expression-filter {
+                width: calc(60% - 11rem);
+                .filter-option {
+                  display: flex;
+                  justify-content: space-between;
+                  padding-top: 10px;
+                  font-size: 16px;
+                  font-family: arial;
+
+                  .option {
+                      padding: 8px 15px;
+                      cursor: pointer;
+                  }
+                  .selected {
+                      border: 1.2px solid rgb(85, 137, 233);
+                      border-radius: 3px;
+                      background: rgb(85, 137, 233);
+                      color: white;
+                  }
+                  .not-selected {
+                    border: 1.2px solid rgb(85, 137, 233);
+                    border-radius: 3px;
+                  }
+                  input {
+                      display: none;
+                  }
+                  label {
+                      cursor: pointer;
+                  }
+                }
+              }
+              .scale-filter {
+                width: calc(60% - 11rem);;
+                .filter-option {
+                  display: flex;
+                  justify-content: space-between;
+                  padding-top: 8px;
+                  font-size: 16px;
+                  font-family: arial;
+
+                  .option {
+                      padding: 8px 6px;
+                      cursor: pointer;
+                  }
+                  .selected {
+                    border: 1.2px solid rgb(85, 137, 233);
+                    border-radius: 3px;
+                    background: rgb(85, 137, 233);
+                    color: white;
+                  }
+                  .not-selected {
+                    border: 1.2px solid rgb(85, 137, 233);
+                    border-radius: 3px;
+                  }
+                  input {
+                      display: none;
+                  }
+                  label {
+                      cursor: pointer;
+                  }
+                }
+              }
+            }
+            .top {
+              margin-top: 20px
+            }
+          }
+          .button-container {
+            button {
+              background-color: rgb(85, 137, 233);
+              border: none;
+              color: white;
+              padding: 10px 45px;
+              text-align: center;
+              font-size: 16px;
+              border-radius: 5px;
+              margin-bottom: 20px;
+            }
+          }
+        }
       }
     }
 	}

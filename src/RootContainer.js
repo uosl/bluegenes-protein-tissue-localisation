@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { queryData } from './query';
 import Heatmap from './components/Heatmap';
+import FilterPanel from './components/FilterPanel';
 
 const RootContainer = ({ serviceUrl, entity }) => {
 	const [data, setData] = useState([]);
 	const [heatmapData, setHeatmapData] = useState([]);
+	const [tissueList, setTissueList] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [selectedExpression, setSelectedExpression] = useState({});
+
 	useEffect(() => {
 		if (localStorage.getItem('heat')) {
 			setData(JSON.parse(localStorage.getItem('heat')));
@@ -78,6 +82,9 @@ const RootContainer = ({ serviceUrl, entity }) => {
 				}
 			});
 		});
+		setTissueList(
+			Object.keys(heatmapObj).map(tissue => ({ value: tissue, label: tissue }))
+		);
 		setHeatmapData([heatmapObj]);
 	}, [data]);
 
@@ -109,13 +116,17 @@ const RootContainer = ({ serviceUrl, entity }) => {
 							{heatmapData.length ? (
 								<Heatmap
 									graphData={heatmapData}
-									graphHeight={data.length * 100 + 50}
+									graphHeight={data.length * 100 + 80}
 								/>
 							) : (
 								<div className="noTissue">
 									Data Not Found! Please Update The Filter.
 								</div>
 							)}
+							<FilterPanel
+								tissueList={tissueList}
+								selectedExpression={selectedExpression}
+							/>
 						</>
 					)}
 				</div>
