@@ -10,7 +10,7 @@ const query = geneId => ({
 	],
 	orderBy: [
 		{
-			path: 'proteinAtlasExpression.cellType',
+			path: 'proteinAtlasExpression.tissue.name',
 			direction: 'ASC'
 		}
 	],

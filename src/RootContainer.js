@@ -28,48 +28,48 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		const genes = data.map(d => d.symbol);
 		data.forEach(d => {
 			d.proteinAtlasExpression.forEach(p => {
-				heatmapObj[p.cellType] = {
+				heatmapObj[p.tissue.name] = {
 					data:
-						heatmapObj[p.cellType] && heatmapObj[p.cellType].data
+						heatmapObj[p.tissue.name] && heatmapObj[p.tissue.name].data
 							? {
-								...heatmapObj[p.cellType].data,
-								[d.symbol]: heatmapObj[p.cellType].data[d.symbol]
+								...heatmapObj[p.tissue.name].data,
+								[d.symbol]: heatmapObj[p.tissue.name].data[d.symbol]
 									? {
-										[p.tissue.name]: getScore(p.level),
-										...heatmapObj[p.cellType].data[d.symbol]
+										[p.cellType]: getScore(p.level),
+										...heatmapObj[p.tissue.name].data[d.symbol]
 									}
 									: {
 										Gene: d.symbol,
-										[p.tissue.name]: getScore(p.level)
+										[p.cellType]: getScore(p.level)
 									}
-							}
+							  }
 							: {
 								[d.symbol]: {
 									Gene: d.symbol,
-									[p.tissue.name]: getScore(p.level)
+									[p.cellType]: getScore(p.level)
 								}
 							},
 					tissue:
-						heatmapObj[p.cellType] && heatmapObj[p.cellType].tissue
-							? heatmapObj[p.cellType].tissue.filter(
-								t => t.value == p.tissue.name
+						heatmapObj[p.tissue.name] && heatmapObj[p.tissue.name].tissue
+							? heatmapObj[p.tissue.name].tissue.filter(
+								t => t.value == p.cellType
 							  ).length == 0
 								? [
-									{ value: p.tissue.name, label: p.tissue.name },
-									...heatmapObj[p.cellType].tissue
+									{ value: p.cellType, label: p.cellType },
+									...heatmapObj[p.tissue.name].tissue
 								  ]
-								: heatmapObj[p.cellType].tissue
-							: [{ value: p.tissue.name, label: p.tissue.name }]
+								: heatmapObj[p.tissue.name].tissue
+							: [{ value: p.cellType, label: p.cellType }]
 				};
-				if(
-					heatmapObj[p.cellType] &&
-					heatmapObj[p.cellType].data &&
-					Object.keys(heatmapObj[p.cellType].data).length < genes.length
+				if (
+					heatmapObj[p.tissue.name] &&
+					heatmapObj[p.tissue.name].data &&
+					Object.keys(heatmapObj[p.tissue.name].data).length < genes.length
 				) {
 					genes.forEach(g => {
-						heatmapObj[p.cellType].data = {
-							[g]: {Gene: g},
-							...heatmapObj[p.cellType].data
+						heatmapObj[p.tissue.name].data = {
+							[g]: { Gene: g },
+							...heatmapObj[p.tissue.name].data
 						};
 					});
 				}
