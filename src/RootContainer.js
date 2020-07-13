@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { queryData } from './query';
-import Heatmap from './Heatmap';
+import Heatmap from './components/Heatmap';
 
 const RootContainer = ({ serviceUrl, entity }) => {
 	const [data, setData] = useState([]);
@@ -32,31 +32,34 @@ const RootContainer = ({ serviceUrl, entity }) => {
 					data:
 						heatmapObj[p.tissue.name] && heatmapObj[p.tissue.name].data
 							? {
-								...heatmapObj[p.tissue.name].data,
-								[d.symbol]: heatmapObj[p.tissue.name].data[d.symbol]
-									? {
-										[p.cellType]: getScore(p.level),
-										...heatmapObj[p.tissue.name].data[d.symbol]
-									}
-									: {
-										Gene: d.symbol,
-										[p.cellType]: getScore(p.level)
-									}
+									...heatmapObj[p.tissue.name].data,
+									[d.symbol]: heatmapObj[p.tissue.name].data[d.symbol]
+										? {
+												[p.cellType]: getScore(p.level),
+												// [`${p.cellType}Color`]: getColor(p.level),
+												...heatmapObj[p.tissue.name].data[d.symbol]
+										  }
+										: {
+												Gene: d.symbol,
+												[p.cellType]: getScore(p.level)
+												// [`${p.cellType}Color`]: getColor(p.level)
+										  }
 							  }
 							: {
-								[d.symbol]: {
-									Gene: d.symbol,
-									[p.cellType]: getScore(p.level)
-								}
-							},
+									[d.symbol]: {
+										Gene: d.symbol,
+										[p.cellType]: getScore(p.level)
+										// [`${p.cellType}Color`]: getColor(p.level)
+									}
+							  },
 					tissue:
 						heatmapObj[p.tissue.name] && heatmapObj[p.tissue.name].tissue
 							? heatmapObj[p.tissue.name].tissue.filter(
-								t => t.value == p.cellType
+									t => t.value == p.cellType
 							  ).length == 0
 								? [
-									{ value: p.cellType, label: p.cellType },
-									...heatmapObj[p.tissue.name].tissue
+										{ value: p.cellType, label: p.cellType },
+										...heatmapObj[p.tissue.name].tissue
 								  ]
 								: heatmapObj[p.tissue.name].tissue
 							: [{ value: p.cellType, label: p.cellType }]
@@ -85,19 +88,34 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		return 0;
 	};
 
+	// const getColor = level => {
+	// 	if (level === 'Low') return '#A4B2E1';
+	// 	if (level === 'Medium') return '#747EC4';
+	// 	if (level === 'High') return '#23298B';
+	// 	return '#DCE2F5';
+	// };
+
 	return (
 		<div className="rootContainer">
 			<div className="innerContainer">
 				<div className="graph">
-					<span className="chart-title">Gene Tissue Localisation Network</span>
-					{!data.length && loading ? (
+					{loading ? (
 						<h1>Loading...</h1>
 					) : (
 						<>
-							<Heatmap
-								graphData={heatmapData}
-								graphHeight={data.length * 100 + 50}
-							/>
+							<span className="chart-title">
+								Gene Tissue Localisation Network
+							</span>
+							{heatmapData.length ? (
+								<Heatmap
+									graphData={heatmapData}
+									graphHeight={data.length * 100 + 50}
+								/>
+							) : (
+								<div className="noTissue">
+									Data Not Found! Please Update The Filter.
+								</div>
+							)}
 						</>
 					)}
 				</div>

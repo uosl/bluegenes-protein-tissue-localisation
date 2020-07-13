@@ -12,6 +12,26 @@
   // this is just an example class for root div element, you may modify or delete it as per your usecase
 	.rootContainer {
 		border: 1px solid black;
-		padding: 20px;
+    padding: 20px;
+    .innerContainer {
+      .graph {
+        .chart-title {
+					font-weight: 300;
+					font-size: 24px;
+					font-family: sans-serif;
+					display: flex;
+					justify-content: center;
+        }
+        .noTissue {
+          font-size: 22px;
+          font-weight: 300;
+          color: gray;
+          font-family: sans-serif;
+          line-height: 300px;
+          white-space: nowrap;
+          text-align: center;
+        }
+      }
+    }
 	}
 }
