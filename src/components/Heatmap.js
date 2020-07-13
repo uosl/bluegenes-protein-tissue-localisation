@@ -57,14 +57,15 @@ const Heatmap = ({ graphData, graphHeight }) => {
 							axisLeft={
 								!index
 									? {
-										orient: 'left',
-										tickSize: 5,
-										tickPadding: 5,
-										tickRotation: 0
+											orient: 'left',
+											tickSize: 5,
+											tickPadding: 5,
+											tickRotation: 0
 									  }
 									: null
 							}
-							cellBorderWidth={2}
+							cellBorderWidth={1}
+							cellBorderColor="rgb(51,51,51)"
 							enableLabels={false}
 						/>
 					</div>
