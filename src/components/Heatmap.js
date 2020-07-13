@@ -33,7 +33,7 @@ const Heatmap = ({ graphData, graphHeight }) => {
 							margin={{
 								top: 200,
 								right: 0,
-								bottom: 0,
+								bottom: 30,
 								left: index != 0 ? 0 : 60
 							}}
 							forceSquare={true}
