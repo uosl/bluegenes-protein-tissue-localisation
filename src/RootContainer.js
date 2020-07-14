@@ -5,12 +5,18 @@ import FilterPanel from './components/FilterPanel';
 
 const RootContainer = ({ serviceUrl, entity }) => {
 	const [data, setData] = useState([]);
-	const [heatmapData, setHeatmapData] = useState([]);
+	const [heatmapData, setHeatmapData] = useState({});
+	const [filteredHeatmapData, setFilterHeatmapData] = useState({});
 	const [tissueList, setTissueList] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [selectedExpression, setSelectedExpression] = useState({});
+	const [selectedTissue, setSelectedTissue] = useState([]);
+	const expressionLevel = ['Low', 'Medium', 'High', 'Not Detected'];
 
 	useEffect(() => {
+		let levelMap = {};
+		expressionLevel.forEach(l => (levelMap = { ...levelMap, [l]: true }));
+		setSelectedExpression(levelMap);
 		if (localStorage.getItem('heat')) {
 			setData(JSON.parse(localStorage.getItem('heat')));
 			return;
@@ -82,10 +88,15 @@ const RootContainer = ({ serviceUrl, entity }) => {
 				}
 			});
 		});
-		setTissueList(
-			Object.keys(heatmapObj).map(tissue => ({ value: tissue, label: tissue }))
-		);
-		setHeatmapData([heatmapObj]);
+		const tissueList = Object.keys(heatmapObj).map(tissue => ({
+			value: tissue,
+			label: tissue
+		}));
+
+		setTissueList(tissueList);
+		setSelectedTissue(tissueList);
+		setHeatmapData(heatmapObj);
+		setFilterHeatmapData(heatmapObj);
 	}, [data]);
 
 	const getScore = level => {
@@ -95,12 +106,30 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		return 0;
 	};
 
+	const expressionLevelFilter = e => {
+		const { value, checked } = e.target;
+		// simply toggle the state of expression level in its map
+		setSelectedExpression({
+			...selectedExpression,
+			[value]: checked
+		});
+	};
+
 	// const getColor = level => {
 	// 	if (level === 'Low') return '#A4B2E1';
 	// 	if (level === 'Medium') return '#747EC4';
 	// 	if (level === 'High') return '#23298B';
 	// 	return '#DCE2F5';
 	// };
+
+	const filterByTissue = () => {
+		const tissues = selectedTissue.map(t => t.value);
+		const obj = {};
+		Object.keys(heatmapData).map(data => {
+			if (tissues.indexOf(data) !== -1) obj[data] = heatmapData[data];
+		});
+		setFilterHeatmapData(obj);
+	};
 
 	return (
 		<div className="rootContainer">
@@ -113,9 +142,9 @@ const RootContainer = ({ serviceUrl, entity }) => {
 							<span className="chart-title">
 								Gene Tissue Localisation Network
 							</span>
-							{heatmapData.length ? (
+							{Object.keys(filteredHeatmapData).length ? (
 								<Heatmap
-									graphData={heatmapData}
+									graphData={filteredHeatmapData}
 									graphHeight={data.length * 100 + 80}
 								/>
 							) : (
@@ -126,6 +155,9 @@ const RootContainer = ({ serviceUrl, entity }) => {
 							<FilterPanel
 								tissueList={tissueList}
 								selectedExpression={selectedExpression}
+								expressionLevelFilter={expressionLevelFilter}
+								updateFilter={value => setSelectedTissue(value)}
+								filterTissue={filterByTissue}
 							/>
 						</>
 					)}

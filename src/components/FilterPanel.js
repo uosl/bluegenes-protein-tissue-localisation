@@ -1,7 +1,13 @@
 import React from 'react';
 import Dropdown from './Dropdown';
 
-const FilterPanel = ({ tissueList, selectedExpression }) => {
+const FilterPanel = ({
+	tissueList,
+	selectedExpression,
+	expressionLevelFilter,
+	updateFilter,
+	filterTissue
+}) => {
 	return (
 		<div className="filter-panel-root">
 			<div className="filter-panel-title">Filter Panel</div>
@@ -12,8 +18,8 @@ const FilterPanel = ({ tissueList, selectedExpression }) => {
 						<div className="dropdown">
 							<Dropdown
 								options={tissueList}
-								// updateFilter={updateFilter}
-								// filterTissue={filterTissue}
+								updateFilter={updateFilter}
+								filterTissue={filterTissue}
 							/>
 						</div>
 					</div>
@@ -33,7 +39,7 @@ const FilterPanel = ({ tissueList, selectedExpression }) => {
 										type="checkbox"
 										id={term}
 										value={term}
-										// onChange={expressionLevelFilter}
+										onChange={expressionLevelFilter}
 										checked={selectedExpression[term]}
 									/>
 									<label htmlFor={term}>{term}</label>
