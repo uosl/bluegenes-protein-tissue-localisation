@@ -17,10 +17,6 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		let levelMap = {};
 		expressionLevel.forEach(l => (levelMap = { ...levelMap, [l]: true }));
 		setSelectedExpression(levelMap);
-		if (localStorage.getItem('heat')) {
-			setData(JSON.parse(localStorage.getItem('heat')));
-			return;
-		}
 		setLoading(true);
 		const { value } = entity;
 		queryData({
@@ -28,7 +24,6 @@ const RootContainer = ({ serviceUrl, entity }) => {
 			geneId: !Array.isArray(value) ? [value] : value
 		}).then(data => {
 			setData(data);
-			localStorage.setItem('heat', JSON.stringify(data));
 			setLoading(false);
 		});
 	}, []);
@@ -46,20 +41,17 @@ const RootContainer = ({ serviceUrl, entity }) => {
 									[d.symbol]: heatmapObj[p.tissue.name].data[d.symbol]
 										? {
 												[p.cellType]: getScore(p.level),
-												// [`${p.cellType}Color`]: getColor(p.level),
 												...heatmapObj[p.tissue.name].data[d.symbol]
 										  }
 										: {
 												Gene: d.symbol,
 												[p.cellType]: getScore(p.level)
-												// [`${p.cellType}Color`]: getColor(p.level)
 										  }
 							  }
 							: {
 									[d.symbol]: {
 										Gene: d.symbol,
 										[p.cellType]: getScore(p.level)
-										// [`${p.cellType}Color`]: getColor(p.level)
 									}
 							  },
 					tissue:
@@ -109,24 +101,38 @@ const RootContainer = ({ serviceUrl, entity }) => {
 	const expressionLevelFilter = e => {
 		const { value, checked } = e.target;
 		// simply toggle the state of expression level in its map
-		setSelectedExpression({
+		const newSelectedExpression = {
 			...selectedExpression,
 			[value]: checked
-		});
+		};
+		setSelectedExpression(newSelectedExpression);
+		filterByTissue(newSelectedExpression);
 	};
 
-	// const getColor = level => {
-	// 	if (level === 'Low') return '#A4B2E1';
-	// 	if (level === 'Medium') return '#747EC4';
-	// 	if (level === 'High') return '#23298B';
-	// 	return '#DCE2F5';
-	// };
-
-	const filterByTissue = () => {
+	const filterByTissue = newSelectedExpression => {
 		const tissues = selectedTissue.map(t => t.value);
 		const obj = {};
-		Object.keys(heatmapData).map(data => {
-			if (tissues.indexOf(data) !== -1) obj[data] = heatmapData[data];
+		Object.keys(heatmapData).map(tissue => {
+			if (tissues.indexOf(tissue) !== -1) {
+				obj[tissue] = {
+					data: {},
+					tissue: heatmapData[tissue].tissue
+				};
+				Object.keys(heatmapData[tissue].data).map(gene => {
+					obj[tissue].data[gene] = { Gene: gene };
+					Object.keys(heatmapData[tissue].data[gene]).map(cell => {
+						const value = heatmapData[tissue].data[gene][cell];
+						if (value == 1 && newSelectedExpression['Low'])
+							obj[tissue].data[gene][cell] = value;
+						if (value == 0 && newSelectedExpression['Not Detected'])
+							obj[tissue].data[gene][cell] = value;
+						if (value == 2 && newSelectedExpression['Medium'])
+							obj[tissue].data[gene][cell] = value;
+						if (value == 3 && newSelectedExpression['High'])
+							obj[tissue].data[gene][cell] = value;
+					});
+				});
+			}
 		});
 		setFilterHeatmapData(obj);
 	};
@@ -143,10 +149,12 @@ const RootContainer = ({ serviceUrl, entity }) => {
 								Gene Tissue Localisation Network
 							</span>
 							{Object.keys(filteredHeatmapData).length ? (
-								<Heatmap
-									graphData={filteredHeatmapData}
-									graphHeight={data.length * 100 + 80}
-								/>
+								<div className="graph-container">
+									<Heatmap
+										graphData={filteredHeatmapData}
+										graphHeight={data.length * 60 + 80}
+									/>
+								</div>
 							) : (
 								<div className="noTissue">
 									Data Not Found! Please Update The Filter.
@@ -157,7 +165,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 								selectedExpression={selectedExpression}
 								expressionLevelFilter={expressionLevelFilter}
 								updateFilter={value => setSelectedTissue(value)}
-								filterTissue={filterByTissue}
+								filterTissue={() => filterByTissue(selectedExpression)}
 							/>
 						</>
 					)}
