@@ -22,10 +22,12 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		queryData({
 			serviceUrl: serviceUrl,
 			geneId: !Array.isArray(value) ? [value] : value
-		}).then(data => {
-			setData(data);
-			setLoading(false);
-		});
+		})
+			.then(data => {
+				setData(data);
+				setLoading(false);
+			})
+			.catch(() => setLoading(false));
 	}, []);
 
 	useEffect(() => {
