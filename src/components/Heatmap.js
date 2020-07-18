@@ -2,7 +2,7 @@ import React from 'react';
 import { HeatMap } from '@nivo/heatmap';
 const heatmap_colors = ['#B9D6F7', '#87B8EF', '#569EEE', '#1A75DC'];
 
-const Heatmap = ({ graphData, graphHeight }) => {
+const Heatmap = ({ graphData, graphHeight, getLevel }) => {
 	return (
 		<div
 			style={{
@@ -63,6 +63,33 @@ const Heatmap = ({ graphData, graphHeight }) => {
 								  }
 								: null
 						}
+						tooltip={node => {
+							const { xKey, yKey, value, color } = node;
+							return (
+								<div
+									style={{
+										whiteSpace: 'pre',
+										display: 'flex',
+										alignItems: 'center'
+									}}
+								>
+									<span
+										style={{
+											display: 'block',
+											width: 12,
+											height: 12,
+											background: color,
+											marginRight: 7
+										}}
+									></span>
+									<span>
+										{yKey} - {xKey}
+										{value !== undefined ? ':' : ''}{' '}
+										<strong>{getLevel(value)}</strong>
+									</span>
+								</div>
+							);
+						}}
 						cellHoverOthersOpacity={1}
 						cellOpacity={1}
 						cellBorderWidth={1}

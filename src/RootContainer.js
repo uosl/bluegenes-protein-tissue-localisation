@@ -100,6 +100,13 @@ const RootContainer = ({ serviceUrl, entity }) => {
 		return 0;
 	};
 
+	const getLevel = value => {
+		if (value === 0) return 'Not Detected';
+		if (value === 1) return 'Low';
+		if (value === 2) return 'Medium';
+		if (value === 3) return 'High';
+	};
+
 	const expressionLevelFilter = e => {
 		const { value, checked } = e.target;
 		// simply toggle the state of expression level in its map
@@ -155,6 +162,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 									<Heatmap
 										graphData={filteredHeatmapData}
 										graphHeight={data.length * 60 + 80}
+										getLevel={getLevel}
 									/>
 								</div>
 							) : (
