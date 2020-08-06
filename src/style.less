@@ -38,67 +38,92 @@
           overflow-y: scroll;
         }
 
-        .filter-panel-root {
-          width: 70%;
-          margin: auto;
-          text-align: center;
-          border: solid 1px black;
-          border-radius: 4px;
+        .lower-container {
+          display: flex;
+          justify-content: space-evenly;
 
-          .filter-panel-title {
-            margin-top: 20px;
-            font-size: 20px;
-            font-family: sans-serif;
+          .filter-panel-root {
+            width: 70%;
+            margin: auto;
             text-align: center;
-          }
+            border: solid 1px black;
+            border-radius: 4px;
 
-          .filter-panel {
-            padding: 30px;
-
-            .filter-container {
-              display: flex;
-              text-align: left;
-              font-size: 16px;
-              font-weight: 300;
+            .filter-panel-title {
+              margin-top: 20px;
+              font-size: 20px;
               font-family: sans-serif;
-              .tissue-filter {
-                width: 30rem;
-                margin-right: 50px;
-                .dropdown {
-                  margin: 10px 0 0 0;
-                }
-              }
-              .expression-filter {
-                width: calc(60% - 11rem);
-                .filter-option {
-                  display: flex;
-                  justify-content: space-between;
-                  padding-top: 10px;
-                  font-size: 16px;
-                  font-family: arial;
+              text-align: center;
+            }
 
-                  .option {
-                      padding: 8px 15px;
-                      cursor: pointer;
+            .filter-panel {
+              padding: 30px;
+
+              .filter-container {
+                display: flex;
+                text-align: left;
+                font-size: 16px;
+                font-weight: 300;
+                font-family: sans-serif;
+                .tissue-filter {
+                  width: 30rem;
+                  margin-right: 50px;
+                  .dropdown {
+                    margin: 10px 0 0 0;
                   }
-                  .selected {
+                }
+                .expression-filter {
+                  width: calc(60% - 11rem);
+                  .filter-option {
+                    display: flex;
+                    justify-content: space-between;
+                    padding-top: 10px;
+                    font-size: 16px;
+                    font-family: arial;
+
+                    .option {
+                        padding: 8px 15px;
+                        cursor: pointer;
+                    }
+                    .selected {
+                        border: 1.2px solid rgb(85, 137, 233);
+                        border-radius: 3px;
+                        background: rgb(85, 137, 233);
+                        color: white;
+                    }
+                    .not-selected {
                       border: 1.2px solid rgb(85, 137, 233);
                       border-radius: 3px;
-                      background: rgb(85, 137, 233);
-                      color: white;
-                  }
-                  .not-selected {
-                    border: 1.2px solid rgb(85, 137, 233);
-                    border-radius: 3px;
-                  }
-                  input {
-                      display: none;
-                  }
-                  label {
-                      cursor: pointer;
+                    }
+                    input {
+                        display: none;
+                    }
+                    label {
+                        cursor: pointer;
+                    }
                   }
                 }
               }
+            }
+          }
+          .legend {
+            height: 25px;
+            width: 250px;
+            margin-top: 30px;
+            margin-right: 50px;
+            background-image: linear-gradient(to right,  #B9D6F7, #1A75DC);
+            font-size: 13px;
+            font-family: sans-serif;
+            .legend-title {
+              position: relative;
+              font-size: 16px;
+              font-weight: 300;
+              bottom: 30px;
+              left: 60px;
+              text-decoration: underline;
+            }
+            .legend-options {
+              position: absolute;
             }
           }
         }

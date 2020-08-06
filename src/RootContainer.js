@@ -171,13 +171,51 @@ const RootContainer = ({ serviceUrl, entity }) => {
 									Data Not Found! Please Update The Filter.
 								</div>
 							)}
-							<FilterPanel
-								tissueList={tissueList}
-								selectedExpression={selectedExpression}
-								expressionLevelFilter={expressionLevelFilter}
-								updateFilter={value => setSelectedTissue(value)}
-								filterTissue={() => filterByTissue(selectedExpression)}
-							/>
+							<div className="lower-container">
+								<FilterPanel
+									tissueList={tissueList}
+									selectedExpression={selectedExpression}
+									expressionLevelFilter={expressionLevelFilter}
+									updateFilter={value => setSelectedTissue(value)}
+									filterTissue={() => filterByTissue(selectedExpression)}
+								/>
+								{Object.keys(filteredHeatmapData).length ? (
+									<div className="legend">
+										<div className="legend-options">
+											<div className="legend-title">Expression Level</div>
+										</div>
+										<div className="legend-options">
+											<div
+												style={{
+													position: 'relative',
+													top: 25,
+													right: 10,
+													width: 30
+												}}
+											>
+												Not Detected
+											</div>
+										</div>
+										<div className="legend-options">
+											<div style={{ position: 'relative', top: 25, left: 70 }}>
+												Low
+											</div>
+										</div>
+										<div className="legend-options">
+											<div style={{ position: 'relative', top: 25, left: 130 }}>
+												Medium
+											</div>
+										</div>
+										<div className="legend-options">
+											<div style={{ position: 'relative', top: 25, left: 230 }}>
+												High
+											</div>
+										</div>
+									</div>
+								) : (
+									<></>
+								)}
+							</div>
 						</>
 					)}
 				</div>
