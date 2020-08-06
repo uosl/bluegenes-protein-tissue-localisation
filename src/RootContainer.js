@@ -45,10 +45,7 @@ const RootContainer = ({ serviceUrl, entity }) => {
 												[p.cellType]: getScore(p.level),
 												...heatmapObj[p.tissue.name].data[d.symbol]
 										  }
-										: {
-												Gene: d.symbol,
-												[p.cellType]: getScore(p.level)
-										  }
+										: { Gene: d.symbol, [p.cellType]: getScore(p.level) }
 							  }
 							: {
 									[d.symbol]: {
@@ -161,7 +158,11 @@ const RootContainer = ({ serviceUrl, entity }) => {
 								<div className="graph-container">
 									<Heatmap
 										graphData={filteredHeatmapData}
-										graphHeight={data.length * 60 + 80}
+										graphHeight={
+											data.length == 1
+												? data.length * 60 + 200
+												: data.length * 60 + 180
+										}
 										getLevel={getLevel}
 									/>
 								</div>
