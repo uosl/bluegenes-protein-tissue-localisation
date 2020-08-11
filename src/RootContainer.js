@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { queryData } from './query';
 import Heatmap from './components/Heatmap';
 import FilterPanel from './components/FilterPanel';
+import Loading from './components/Loading';
 
 const RootContainer = ({ serviceUrl, entity }) => {
 	const [data, setData] = useState([]);
@@ -145,81 +146,75 @@ const RootContainer = ({ serviceUrl, entity }) => {
 
 	return (
 		<div className="rootContainer">
-			<div className="innerContainer">
-				<div className="graph">
-					{loading ? (
-						<h1>Loading...</h1>
+			<span className="chart-title">Gene Tissue Localisation Network</span>
+			{loading ? (
+				<Loading />
+			) : (
+				<>
+					{Object.keys(filteredHeatmapData).length ? (
+						<div className="graph-container">
+							<Heatmap
+								graphData={filteredHeatmapData}
+								graphHeight={
+									data.length == 1
+										? data.length * 60 + 200
+										: data.length * 60 + 180
+								}
+								getLevel={getLevel}
+							/>
+						</div>
 					) : (
-						<>
-							<span className="chart-title">
-								Gene Tissue Localisation Network
-							</span>
-							{Object.keys(filteredHeatmapData).length ? (
-								<div className="graph-container">
-									<Heatmap
-										graphData={filteredHeatmapData}
-										graphHeight={
-											data.length == 1
-												? data.length * 60 + 200
-												: data.length * 60 + 180
-										}
-										getLevel={getLevel}
-									/>
-								</div>
-							) : (
-								<div className="noTissue">
-									Data Not Found! Please Update The Filter.
-								</div>
-							)}
-							<div className="lower-container">
-								<FilterPanel
-									tissueList={tissueList}
-									selectedExpression={selectedExpression}
-									expressionLevelFilter={expressionLevelFilter}
-									updateFilter={value => setSelectedTissue(value)}
-									filterTissue={() => filterByTissue(selectedExpression)}
-								/>
-								{Object.keys(filteredHeatmapData).length ? (
-									<div className="legend">
-										<div className="legend-options">
-											<div className="legend-title">Expression Level</div>
-										</div>
-										<div className="legend-options">
-											<div
-												style={{
-													position: 'relative',
-													top: 25,
-													right: 10,
-													width: 30
-												}}
-											>
-												Not Detected
-											</div>
-										</div>
-										<div className="legend-options">
-											<div style={{ position: 'relative', top: 25, left: 70 }}>
-												Low
-											</div>
-										</div>
-										<div className="legend-options">
-											<div style={{ position: 'relative', top: 25, left: 130 }}>
-												Medium
-											</div>
-										</div>
-										<div className="legend-options">
-											<div style={{ position: 'relative', top: 25, left: 230 }}>
-												High
-											</div>
-										</div>
-									</div>
-								) : (
-									<></>
-								)}
-							</div>
-						</>
+						<div className="noTissue">
+							Data Not Found! Please Update The Filter.
+						</div>
 					)}
-				</div>
-			</div>
+					<div className="lower-container">
+						<FilterPanel
+							tissueList={tissueList}
+							selectedExpression={selectedExpression}
+							expressionLevelFilter={expressionLevelFilter}
+							updateFilter={value => setSelectedTissue(value)}
+							filterTissue={() => filterByTissue(selectedExpression)}
+						/>
+						{Object.keys(filteredHeatmapData).length ? (
+							<div className="legend">
+								<div className="legend-options">
+									<div className="legend-title">Expression Level</div>
+								</div>
+								<div className="legend-options">
+									<div
+										style={{
+											position: 'relative',
+											top: 25,
+											right: 10,
+											width: 30
+										}}
+									>
+										Not Detected
+									</div>
+								</div>
+								<div className="legend-options">
+									<div style={{ position: 'relative', top: 25, left: 70 }}>
+										Low
+									</div>
+								</div>
+								<div className="legend-options">
+									<div style={{ position: 'relative', top: 25, left: 130 }}>
+										Medium
+									</div>
+								</div>
+								<div className="legend-options">
+									<div style={{ position: 'relative', top: 25, left: 230 }}>
+										High
+									</div>
+								</div>
+							</div>
+						) : (
+							<></>
+						)}
+					</div>
+				</>
+			)}
 		</div>
 	);
 };
