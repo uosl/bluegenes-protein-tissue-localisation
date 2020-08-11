@@ -1,0 +1,160 @@
+.bluegenesProteinTissueLocalisation {
+  // put all your css classes inside this block. Keeping them
+  // nested under the tool name prevents your styles from
+  // leaking out and affecting other elements by accident.
+
+  // If you want to learn more about LESS, visit lesscss.org.
+
+  // to build your css, run `lessc src/style.css dist/style.css --clean-css`
+  // in your terminal
+
+
+  // this is just an example class for root div element, you may modify or delete it as per your usecase
+	.rootContainer {
+		border: 1px solid black;
+    padding: 20px;
+    height: max-content;
+    @keyframes inner-loading-container {
+      0% { background: #dfdddd }
+      12.5% { background: #dfdddd }
+      12.625% { background: rgb(85, 137, 233) }
+      100% { background: rgb(85, 137, 233) }
+    }
+    .inner-loading-container div {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: rgb(85, 137, 233);
+      animation: inner-loading-container 0.9345794392523364s linear infinite;
+    }
+    .loading-container {
+      width: 100%;
+      height: 300px;
+      display: inline-block;
+      overflow: hidden;
+      background: none;
+    }
+    .inner-loading-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform: translateZ(0) scale(1);
+      backface-visibility: hidden;
+      transform-origin: 0 0;
+      left: calc(100vw - 52rem);
+    }
+    .inner-loading-container div { box-sizing: content-box; }
+    .chart-title {
+      font-weight: 300;
+      font-size: 24px;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+    }
+    .noTissue {
+      font-size: 22px;
+      font-weight: 300;
+      color: gray;
+      font-family: sans-serif;
+      line-height: 300px;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .graph-container {
+      height: calc(100vh - 19rem);
+      margin: 20px 0;
+      overflow-y: scroll;
+    }
+
+    .lower-container {
+      display: flex;
+      justify-content: space-evenly;
+
+      .filter-panel-root {
+        width: 70%;
+        margin: auto;
+        text-align: center;
+        border: solid 1px black;
+        border-radius: 4px;
+
+        .filter-panel-title {
+          margin-top: 20px;
+          font-size: 20px;
+          font-family: sans-serif;
+          text-align: center;
+        }
+
+        .filter-panel {
+          padding: 30px;
+
+          .filter-container {
+            display: flex;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 300;
+            font-family: sans-serif;
+            .tissue-filter {
+              width: 30rem;
+              margin-right: 50px;
+              .dropdown {
+                margin: 10px 0 0 0;
+              }
+            }
+            .expression-filter {
+              width: calc(60% - 11rem);
+              .filter-option {
+                display: flex;
+                justify-content: space-between;
+                padding-top: 10px;
+                font-size: 16px;
+                font-family: arial;
+
+                .option {
+                    padding: 8px 15px;
+                    cursor: pointer;
+                }
+                .selected {
+                    border: 1.2px solid rgb(85, 137, 233);
+                    border-radius: 3px;
+                    background: rgb(85, 137, 233);
+                    color: white;
+                }
+                .not-selected {
+                  border: 1.2px solid rgb(85, 137, 233);
+                  border-radius: 3px;
+                }
+                input {
+                    display: none;
+                }
+                label {
+                    cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+      }
+      .legend {
+        height: 25px;
+        width: 250px;
+        margin-top: 30px;
+        margin-right: 50px;
+        background-image: linear-gradient(to right,  #B9D6F7, #1A75DC);
+        font-size: 13px;
+        font-family: sans-serif;
+        .legend-title {
+          position: relative;
+          font-size: 16px;
+          font-weight: 300;
+          bottom: 30px;
+          left: 60px;
+          text-decoration: underline;
+        }
+        .legend-options {
+          position: absolute;
+        }
+      }
+    }
+  }
+}

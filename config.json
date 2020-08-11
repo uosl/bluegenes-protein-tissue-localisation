@@ -1,0 +1,21 @@
+{
+  "accepts": ["id","ids"],
+  "classes": ["Gene"],
+  "columnMapping": {
+    "Gene": {
+      "id": "primaryIdentifier"
+    },
+    "Protein": {
+      "id": "primaryAccession"
+    }
+  },
+  "files" : {
+    "css" : "dist/style.css",
+    "js" : "dist/bundle.js"
+  },
+  "toolName" : {
+    "human" :"Bluegenes Protein Tissue Localisation",
+    "cljs" :"bluegenesProteinTissueLocalisation"    
+  },
+  "version": 2
+}
