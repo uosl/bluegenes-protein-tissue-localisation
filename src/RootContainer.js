@@ -146,74 +146,25 @@ const RootContainer = ({ serviceUrl, entity }) => {
 
 	return (
 		<div className="rootContainer">
-			<span className="chart-title">Gene Tissue Localisation Network</span>
-			{loading ? (
+			<FilterPanel
+				tissueList={tissueList}
+				selectedExpression={selectedExpression}
+				expressionLevelFilter={expressionLevelFilter}
+				updateFilter={value => setSelectedTissue(value)}
+				filterTissue={() => filterByTissue(selectedExpression)}
+			/>
+			{Object.keys(filteredHeatmapData).length ? (
+				<Heatmap
+					graphData={filteredHeatmapData}
+					graphHeight={
+						data.length == 1 ? data.length * 60 + 200 : data.length * 60 + 180
+					}
+					getLevel={getLevel}
+				/>
+			) : loading ? (
 				<Loading />
 			) : (
-				<>
-					{Object.keys(filteredHeatmapData).length ? (
-						<div className="graph-container">
-							<Heatmap
-								graphData={filteredHeatmapData}
-								graphHeight={
-									data.length == 1
-										? data.length * 60 + 200
-										: data.length * 60 + 180
-								}
-								getLevel={getLevel}
-							/>
-						</div>
-					) : (
-						<div className="noTissue">
-							Data Not Found! Please Update The Filter.
-						</div>
-					)}
-					<div className="lower-container">
-						<FilterPanel
-							tissueList={tissueList}
-							selectedExpression={selectedExpression}
-							expressionLevelFilter={expressionLevelFilter}
-							updateFilter={value => setSelectedTissue(value)}
-							filterTissue={() => filterByTissue(selectedExpression)}
-						/>
-						{Object.keys(filteredHeatmapData).length ? (
-							<div className="legend">
-								<div className="legend-options">
-									<div className="legend-title">Expression Level</div>
-								</div>
-								<div className="legend-options">
-									<div
-										style={{
-											position: 'relative',
-											top: 25,
-											right: 10,
-											width: 30
-										}}
-									>
-										Not Detected
-									</div>
-								</div>
-								<div className="legend-options">
-									<div style={{ position: 'relative', top: 25, left: 70 }}>
-										Low
-									</div>
-								</div>
-								<div className="legend-options">
-									<div style={{ position: 'relative', top: 25, left: 130 }}>
-										Medium
-									</div>
-								</div>
-								<div className="legend-options">
-									<div style={{ position: 'relative', top: 25, left: 230 }}>
-										High
-									</div>
-								</div>
-							</div>
-						) : (
-							<></>
-						)}
-					</div>
-				</>
+				<h4>No results</h4>
 			)}
 		</div>
 	);

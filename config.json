@@ -9,12 +9,13 @@
       "id": "primaryAccession"
     }
   },
+  "depends": ["ProteinAtlasExpression"],
   "files" : {
     "css" : "dist/style.css",
     "js" : "dist/bundle.js"
   },
   "toolName" : {
-    "human" :"Bluegenes Protein Tissue Localisation",
+    "human" :"Protein Tissue Localisation",
     "cljs" :"bluegenesProteinTissueLocalisation"    
   },
   "version": 2
