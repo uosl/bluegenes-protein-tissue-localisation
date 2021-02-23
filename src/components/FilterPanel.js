@@ -24,7 +24,7 @@ const FilterPanel = ({
 				Expression score
 				<div className="filter-option">
 					{['Low', 'Medium', 'High', 'Not Detected'].map(term => (
-						<label htmlFor={term} key={term}>
+						<label key={term}>
 							<div
 								className={
 									selectedExpression[term]
@@ -34,7 +34,6 @@ const FilterPanel = ({
 							>
 								<input
 									type="checkbox"
-									id={term}
 									value={term}
 									onChange={expressionLevelFilter}
 									checked={selectedExpression[term]}
